@@ -1,5 +1,3 @@
-# ice_cream_app_enhanced.py
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -27,10 +25,12 @@ uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 def load_data(file):
     return pd.read_csv(file)
 
+# Handle missing file upload
 if uploaded_file:
     df = load_data(uploaded_file)
 else:
-    df = load_data("Ice_cream selling data.csv")
+    st.warning("⚠️ Please upload a dataset to proceed.")
+    st.stop()  # 👈 Stop the app from running further
 
 # Show dataset
 if st.checkbox("Show Dataset"):
