@@ -100,7 +100,7 @@ city = st.text_input("Enter your city for live temperature", "")
 
 if st.button("Fetch Weather & Predict"):
     if city:
-        api_key = "8679ed120f0bec3837c6727737f6363b"  # 🔐 Replace with your key
+        api_key = "18faf3a004103a18533a98488599ebd4"  # 🔐 Replace with your key
         try:
             response = requests.get(
                 f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
