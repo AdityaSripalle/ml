@@ -13,6 +13,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.metrics import mean_squared_error, r2_score
 from math import sqrt
 
+# Streamlit config
 st.set_page_config(page_title="Ice Cream Sales Predictor", layout="centered")
 st.title("🍦 Ice Cream Sales Predictor (Enhanced)")
 st.subheader("Predict sales based on temperature using Machine Learning")
@@ -30,15 +31,15 @@ if uploaded_file:
     df = load_data(uploaded_file)
 else:
     st.warning("⚠️ Please upload a dataset to proceed.")
-    st.stop()  # 👈 Stop the app from running further
+    st.stop()  # Stop app from running further
 
 # Show dataset
 if st.checkbox("Show Dataset"):
     st.write(df)
 
 # Feature & target
-X = df.iloc[:, [0]]
-y = df.iloc[:, [1]]
+X = df.iloc[:, [0]]  # Assuming first column is Temperature
+y = df.iloc[:, [1]]  # Assuming second column is Sales
 
 # Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
@@ -62,6 +63,7 @@ mse = mean_squared_error(y_test, y_pred)
 rmse = sqrt(mse)
 r2 = r2_score(y_test, y_pred)
 
+# Model Performance
 st.subheader("📈 Model Performance")
 st.write(f"*Degree:* {degree}")
 st.write(f"*MSE:* {mse:.2f}")
@@ -81,7 +83,8 @@ st.pyplot(fig)
 # User prediction input
 st.subheader("🧮 Predict Sales")
 user_temp = st.number_input("Enter Temperature (°C)", value=25.0)
-predicted_sales = model.predict(np.array([[user_temp]]))[0][0]
+user_input_df = pd.DataFrame([[user_temp]], columns=X.columns)
+predicted_sales = model.predict(user_input_df)[0][0]
 st.success(f"📦 Predicted Sales at {user_temp}°C: *{predicted_sales:.2f} units*")
 
 # Option to export predictions
@@ -107,7 +110,8 @@ if st.button("Fetch Weather & Predict"):
             )
             data = response.json()
             temp_live = data['main']['temp']
-            pred_live = model.predict(np.array([[temp_live]]))[0][0]
+            live_input_df = pd.DataFrame([[temp_live]], columns=X.columns)
+            pred_live = model.predict(live_input_df)[0][0]
             st.info(f"🌡 Current Temp in {city}: {temp_live}°C")
             st.success(f"📈 Predicted Sales: *{pred_live:.2f} units*")
         except:
