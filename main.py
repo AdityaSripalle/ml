@@ -119,6 +119,3 @@ if st.button("Fetch Weather & Predict"):
     else:
         st.warning("Please enter a city name.")
 
-# Footer
-st.markdown("---")
-st.markdown("🔧 Built with Streamlit | ✨ Enhanced with interactivity and real-time weather integration")
